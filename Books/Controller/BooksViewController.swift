@@ -21,7 +21,6 @@ class BooksViewController: UIViewController {
         self.navigationItem.title = "The Best Books"
         tableView.dataSource = self
         tableView.rowHeight = 80.0
-        library = CurrentLibrary.library
     }
 }
 
