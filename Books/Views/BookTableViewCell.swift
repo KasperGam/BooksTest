@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Combine
 
 class BookTableViewCell: UITableViewCell {
 
@@ -14,24 +15,24 @@ class BookTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
 
+    var imageSink: AnyCancellable?
+
     var viewModel: BookCellViewModel? {
         didSet {
-            viewModel?.listener = self
             update()
         }
     }
 
     private func update() {
+        imageSink?.cancel()
+        imageSink = viewModel?.$coverImage.sink() { [weak self] image in
+            DispatchQueue.main.async {
+                self?.coverImageView.image = image
+            }
+        }
+
         coverImageView.image = viewModel?.coverImage
         titleLabel.text = viewModel?.title
         authorLabel.text = viewModel?.author
-    }
-}
-
-extension BookTableViewCell: Listener {
-    func notify() {
-        DispatchQueue.main.async {
-            self.update()
-        }
     }
 }

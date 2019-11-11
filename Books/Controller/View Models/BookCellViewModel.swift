@@ -7,16 +7,13 @@
 //
 
 import UIKit
+import Combine
 
 class BookCellViewModel {
 
     var title: String
     var author: String
-    var coverImage: UIImage? {
-        didSet {
-            listener?.notify()
-        }
-    }
+    @Published var coverImage: UIImage?
 
     weak var listener: Listener?
 
